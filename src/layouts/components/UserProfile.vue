@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { nextTick } from 'vue'
 import { role } from '@/plugins/stores/store'
 import avatar1 from '@images/avatars/avatar-12.png'
 
@@ -22,14 +23,14 @@ const loadUserData = () => {
   }
 }
 
-const logout = () => {
-  // ✅ 1. localStorage에서 모든 데이터 삭제 (로그아웃 시 전체 초기화)
-  localStorage.clear() // ✅ 모든 localStorage 데이터 제거
+const logout = async () => {
+  localStorage.clear()
 
-  // ✅ 2. Vue 반응형 상태 업데이트 (즉시 반영)
-  role.value = '' // ✅ role을 빈 값으로 설정하여 Vertical 네비게이션 즉시 변경
-  userData.value = { name: '', role: '', adminId: '' } // ✅ UI에서도 즉시 반영
-  router.push('/')
+  role.value = ''
+  userData.value = { name: '', role: '', adminId: '' }
+
+  await nextTick() // 상태 변경이 완료된 후 라우팅 실행
+  router.push('/product/all-product')
 }
 
 onMounted(() => {

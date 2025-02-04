@@ -1,7 +1,7 @@
-<!-- src/components/InspectionDialog.vue -->
+y<!-- src/components/InspectionDialog.vue -->
 <script setup lang="ts">
 import { defineEmits, defineProps } from 'vue'
-import BaseDialog from './BaseDialog.vue' // 경로를 정확히 설정
+import BaseDialog from '@/components/ds/BaseDialog.vue'
 
 const props = defineProps<{
   visible: boolean

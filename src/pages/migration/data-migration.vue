@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
-import ResultDialog from '@/pages/ds/ResultDialog.vue' // 경로를 프로젝트 구조에 맞게 조정
+import ResultDialog from '@/components/ds/migration/dialog/ResultDialog.vue'
+import { API_ENDPOINTS } from '@/api/endpoint'
 
-// TypeScript 인터페이스 정의
 interface Product {
   id: number
   productName: string
@@ -15,10 +15,8 @@ interface Product {
   createdAt: string
 }
 
-// 데이터 상태 관리
 const allProducts = ref<Product[]>([])
 
-// 테이블 헤더 정의
 const headers = [
   { title: '상품 ID', key: 'id' },
   { title: '제품명', key: 'productName' },
@@ -30,10 +28,10 @@ const headers = [
   { title: '등록일시', key: 'createdAt' },
 ]
 
-// API로 데이터 불러오기
+// 전체 상품 데이터
 const getAllProducts = async () => {
   try {
-    const response = await axios.get('http://localhost:8081/api/products/all')
+    const response = await axios.get(API_ENDPOINTS.PRODUCTS.ALL)
 
     allProducts.value = response.data
   }
@@ -44,29 +42,25 @@ const getAllProducts = async () => {
 
 const isMigrating = ref(false)
 const isResultDialogVisible = ref(false)
-const migrationMessage = ref('') // API로부터 받은 메시지 저장
+const migrationMessage = ref('')
 
-// 로더 다이얼로그 상태 (유지)
 const isLoaderVisible = ref(false)
 
-// 이관 요청 처리
 const startMigration = async () => {
   isMigrating.value = true
   isLoaderVisible.value = true
 
   try {
-    // API 요청
-    const response = await axios.post('http://localhost:8081/api/products/migrate')
+    const response = await axios.post(API_ENDPOINTS.MIGRATION.MIGRATE)
 
-    // 2초 대기
     await new Promise(resolve => setTimeout(resolve, 2000))
-    console.log(response.data) // UTF-8 메시지 출력
-    // 응답 처리
+    console.log(response.data)
+
     if (response.status === 200) {
       if (typeof response.data === 'string')
         migrationMessage.value = response.data
       else
-        migrationMessage.value = response.data?.message || '이관 요청이 성공했지만 메시지가 반환되지 않았습니다.'
+        migrationMessage.value = response.data?.message
     }
     else {
       migrationMessage.value = '이관 요청이 실패했습니다.'
@@ -74,8 +68,8 @@ const startMigration = async () => {
   }
   catch (error: any) {
     migrationMessage.value = error.response?.data?.message
-                             || error.response?.data?.detail
-                             || '이관 중 알 수 없는 오류가 발생했습니다.'
+    || error.response?.data?.detail
+    || '이관 중 알 수 없는 오류가 발생했습니다.'
   }
   finally {
     isMigrating.value = false
@@ -84,12 +78,10 @@ const startMigration = async () => {
   }
 }
 
-// 컴포넌트 마운트 시 데이터 로드
 onMounted(() => {
   getAllProducts()
 })
 
-// 컬러를 결정하는 함수
 const resolveStatusColor = (reportType: string) => {
   if (reportType === '검사합격')
     return 'success'

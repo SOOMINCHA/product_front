@@ -1,67 +1,76 @@
 import type { RouteRecordRaw } from 'vue-router/auto'
 
-export const routes: RouteRecordRaw[] = [
+const emailRouteComponent = () => import('@/pages/apps/email/index.vue')
+
+// 👉 Redirects
+export const redirects: RouteRecordRaw[] = [
+  // ℹ️ We are redirecting to different pages based on role.
+  // NOTE: Role is just for UI purposes. ACL is based on abilities.
   {
     path: '/',
     name: 'index',
-    component: () => import('@/pages/index.vue'),
-  },
+    redirect: to => {
+      // TODO: Get type from backend
+      const userData = useCookie<Record<string, unknown> | null | undefined>('userData')
+      const userRole = userData.value?.role
 
-  // ✅ 로그인 페이지 (누구나 접근 가능)
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/pages/login.vue'),
-  },
+      if (userRole === 'admin')
+        return { name: 'dashboards-crm' }
+      if (userRole === 'client')
+        return { name: 'access-control' }
 
-  // ✅ 일반 사용자가 접근할 수 있는 페이지 (상품 페이지)
-  {
-    path: '/ds/product/all-prd',
-    name: 'ds-product-all-prd',
-    component: () => import('@/pages/ds/product/all-prd.vue'),
-  },
-
-  // ✅ 관리자 전용 페이지 (로그인 필요 & ADMIN 권한 필요)
-  {
-    path: '/ds/migration/migrate',
-    name: 'ds-migration-migrate',
-    component: () => import('@/pages/ds/migration/migrate.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true },
+      return { name: 'login', query: to.query }
+    },
   },
   {
-    path: '/ds/migration/results',
-    name: 'ds-migration-results',
-    component: () => import('@/pages/ds/migration/results.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true },
+    path: '/pages/user-profile',
+    name: 'pages-user-profile',
+    redirect: () => ({ name: 'pages-user-profile-tab', params: { tab: 'profile' } }),
   },
-
-  // ❌ 접근 불가 페이지 (권한 없는 사용자가 접근 시 표시)
   {
-    path: '/not-authorized',
-    name: 'not-authorized',
-    component: () => import('@/pages/not-authorized.vue'),
+    path: '/pages/account-settings',
+    name: 'pages-account-settings',
+    redirect: () => ({ name: 'pages-account-settings-tab', params: { tab: 'account' } }),
+  },
+]
+
+export const routes: RouteRecordRaw[] = [
+  // Email filter
+  {
+    path: '/apps/email/filter/:filter',
+    name: 'apps-email-filter',
+    component: emailRouteComponent,
+    meta: {
+      navActiveLink: 'apps-email',
+      layoutWrapperClasses: 'layout-content-height-fixed',
+    },
   },
 
-  // // 🔹 기본 홈(`/`) 접속 시, 로그인 여부에 따라 리디렉트
-  // {
-  //   path: '/',
-  //   name: 'index',
-  //   redirect: to => {
-  //     const token = localStorage.getItem('token')
-  //     const userData = token ? JSON.parse(atob(token.split('.')[1])) : null // JWT 디코딩
-  //     const isLoggedIn = !!token
-  //     const userRole = userData?.role || null
+  // Email label
+  {
+    path: '/apps/email/label/:label',
+    name: 'apps-email-label',
+    component: emailRouteComponent,
+    meta: {
+      // contentClass: 'email-application',
+      navActiveLink: 'apps-email',
+      layoutWrapperClasses: 'layout-content-height-fixed',
+    },
+  },
 
-  //     console.log("🔍 홈(`/`) 접속 시 리디렉트 체크:", { isLoggedIn, userRole })
-
-  //     if (!isLoggedIn) return { name: 'ds-product-all-prd' } // ✅ 비로그인 사용자는 상품 페이지로 이동
-  //     return userRole === 'ADMIN' ? { name: 'ds-migration-migrate' } : { name: 'ds-product-all-prd' }
-  //   },
-  // },
-
-  // // 🔹 정의되지 않은 경로 -> 상품 페이지로 리디렉트
-  // {
-  //   path: '/:pathMatch(.*)*',
-  //   redirect: { name: 'ds-product-all-prd' },
-  // },
+  {
+    path: '/dashboards/logistics',
+    name: 'dashboards-logistics',
+    component: () => import('@/pages/apps/logistics/dashboard.vue'),
+  },
+  {
+    path: '/dashboards/academy',
+    name: 'dashboards-academy',
+    component: () => import('@/pages/apps/academy/dashboard.vue'),
+  },
+  {
+    path: '/apps/ecommerce/dashboard',
+    name: 'apps-ecommerce-dashboard',
+    component: () => import('@/pages/dashboards/ecommerce.vue'),
+  },
 ]

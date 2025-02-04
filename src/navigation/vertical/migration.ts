@@ -5,11 +5,11 @@ export default [
     children: [
       {
         title: '이관 실행',
-        to: 'ds-migration-migrate',
+        to: 'migration-data-migration',
       },
       {
         title: '이관 결과 보기',
-        to: 'ds-migration-results',
+        to: 'migration-results',
       },
     ],
   },

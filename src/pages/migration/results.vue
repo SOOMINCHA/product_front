@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
+import { API_ENDPOINTS } from '@/api/endpoint'
 
-// Migration Logs 데이터 타입 정의
 interface MigrationLog {
   id: number
   totalCount: number
@@ -12,16 +12,34 @@ interface MigrationLog {
   migrationTime: string
 }
 
-// 데이터 상태 관리
 const migrationLogs = ref<MigrationLog[]>([])
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 
-// API 호출 및 데이터 가져오기
-const fetchMigrationLogs = async () => {
+const headers = [
+  { title: 'ID', key: 'id' },
+  { title: '총 이관 수', key: 'totalCount' },
+  { title: '위해 상품 수', key: 'successHaz' },
+  { title: '비위해 상품 수', key: 'successNonHaz' },
+  { title: '이관 상태', key: 'status' },
+  { title: '완료 시각', key: 'migrationTime' },
+  { title: '삭제', key: 'delete' },
+]
+
+const resolveStatusColor = (status: string) => {
+  if (status === 'SUCCESS')
+    return 'success'
+  if (status === 'FAIL')
+    return 'error'
+
+  return 'primary'
+}
+
+// 이관 로그 조회
+const getMigrationLogs = async () => {
   isLoading.value = true
   try {
-    const response = await axios.get<MigrationLog[]>('http://localhost:8081/api/products/migrationLogs')
+    const response = await axios.get<MigrationLog[]>(API_ENDPOINTS.MIGRATION.MIGRATIONLOGS)
 
     migrationLogs.value = response.data
   }
@@ -34,13 +52,11 @@ const fetchMigrationLogs = async () => {
   }
 }
 
-// 삭제 함수
+// 이관 로그 삭제
 const deleteLog = async (id: number) => {
   try {
-    // 서버에서 해당 로그 삭제 요청
-    await axios.delete(`http://localhost:8081/api/products/delete/${id}`)
+    await axios.delete(API_ENDPOINTS.MIGRATION.DELETE(id))
 
-    // UI에서 데이터 삭제
     const index = migrationLogs.value.findIndex(log => log.id === id)
     if (index !== -1)
       migrationLogs.value.splice(index, 1)
@@ -53,8 +69,7 @@ const deleteLog = async (id: number) => {
 // 이관 결과 다운
 const download = async () => {
   try {
-    // Export API 호출
-    const response = await axios.get('http://localhost:8081/api/products/download', {
+    const response = await axios.get(API_ENDPOINTS.MIGRATION.DOWNLOAD, {
       responseType: 'blob', // 파일 다운로드를 위해 blob 설정
     })
 
@@ -63,40 +78,18 @@ const download = async () => {
     const link = document.createElement('a')
 
     link.href = url
-    link.setAttribute('download', '데이터_이관_결과.csv') // 파일 이름 지정
+    link.setAttribute('download', '데이터_이관_결과.csv')
     link.click()
-    window.URL.revokeObjectURL(url) // 메모리 해제
+    window.URL.revokeObjectURL(url)
   }
   catch (err) {
     console.error('Export 실패:', err)
   }
 }
 
-// 컴포넌트 로드 시 데이터 가져오기
 onMounted(() => {
-  fetchMigrationLogs()
+  getMigrationLogs()
 })
-
-// 테이블 헤더 정의
-const headers = [
-  { title: 'ID', key: 'id' },
-  { title: '총 이관 수', key: 'totalCount' },
-  { title: '위해 상품 수', key: 'successHaz' },
-  { title: '비위해 상품 수', key: 'successNonHaz' },
-  { title: '이관 상태', key: 'status' },
-  { title: '완료 시각', key: 'migrationTime' },
-  { title: '삭제', key: 'delete' }, // DELETE 추가
-]
-
-// 상태 색상
-const resolveStatusColor = (status: string) => {
-  if (status === 'SUCCESS')
-    return 'success'
-  if (status === 'FAIL')
-    return 'error'
-
-  return 'primary'
-}
 </script>
 
 <template>

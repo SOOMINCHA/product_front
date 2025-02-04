@@ -1,7 +1,6 @@
-<!-- src/components/ResultDialog.vue -->
 <script setup lang="ts">
 import { defineEmits, defineProps } from 'vue'
-import BaseDialog from '@/pages/ds/BaseDialog.vue' // 프로젝트 구조에 맞게 경로 조정
+import BaseDialog from '@/components/ds/BaseDialog.vue'
 
 const props = defineProps<{
   visible: boolean
