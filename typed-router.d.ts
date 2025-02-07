@@ -28,6 +28,6 @@ declare module 'vue-router/auto-routes' {
     'migration-data-migration': RouteRecordInfo<'migration-data-migration', '/migration/data-migration', Record<never, never>, Record<never, never>>,
     'migration-results': RouteRecordInfo<'migration-results', '/migration/results', Record<never, never>, Record<never, never>>,
     'not-authorized': RouteRecordInfo<'not-authorized', '/not-authorized', Record<never, never>, Record<never, never>>,
-    'product-all-product': RouteRecordInfo<'product-all-product', '/product/all-product', Record<never, never>, Record<never, never>>,
+    'product-product-list': RouteRecordInfo<'product-product-list', '/product/product-list', Record<never, never>, Record<never, never>>,
   }
 }

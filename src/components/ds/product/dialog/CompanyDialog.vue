@@ -1,6 +1,5 @@
 <!-- src/components/CompanyDialog.vue -->
 <script setup lang="ts">
-import { defineEmits, defineProps } from 'vue'
 import BaseDialog from '@/components/ds/BaseDialog.vue'
 
 const props = defineProps<{

@@ -30,7 +30,7 @@ const logout = async () => {
   userData.value = { name: '', role: '', adminId: '' }
 
   await nextTick() // 상태 변경이 완료된 후 라우팅 실행
-  router.push('/product/all-product')
+  router.push('/product/product-list')
 }
 
 onMounted(() => {

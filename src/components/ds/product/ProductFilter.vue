@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineEmits, defineProps, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps<{
   categories: Array<{ title: string; value: number }>

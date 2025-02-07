@@ -4,7 +4,7 @@ import ProductTable from '@/components/ds/product/ProductTable.vue'
 import CompanyDialog from '@/components/ds/product/dialog/CompanyDialog.vue'
 import InspectionDialog from '@/components/ds/product/dialog/InspectionDialog.vue'
 
-import { useProductManager } from '@/composables/ds/all-product'
+import { productStore } from '@/composables/ds/productStore'
 
 const categories = [
   { title: '식품', value: 1 },
@@ -20,7 +20,6 @@ const reportTypes = [
   { title: '회수명령', value: '회수명령' },
 ]
 
-// Composable에서 상태/함수 가져오기
 const {
   // 상태
   allProducts,
@@ -46,7 +45,7 @@ const {
   openInspectionDialog,
   selectAllRows,
   exportCsv,
-} = useProductManager()
+} = productStore()
 </script>
 
 <template>

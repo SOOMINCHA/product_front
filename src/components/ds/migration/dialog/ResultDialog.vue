@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineEmits, defineProps } from 'vue'
 import BaseDialog from '@/components/ds/BaseDialog.vue'
 
 const props = defineProps<{
@@ -20,7 +19,7 @@ const emitUpdateVisible = (value: boolean) => {
   <BaseDialog
     :visible="visible"
     title="이관 결과"
-    width="500"
+    width="700"
     @update:visible="emitUpdateVisible"
   >
     <template #content>

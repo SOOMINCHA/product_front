@@ -26,17 +26,10 @@ const router = useRouter()
 // 로그인
 const login = async () => {
   try {
-    console.log('로그인 요청 데이터:', {
-      adminId: form.value.adminId,
-      password: form.value.password,
-    })
-
     const response = await axios.post(API_ENDPOINTS.AUTH.LOGIN, {
       adminId: form.value.adminId,
       password: form.value.password,
     })
-
-    console.log('API 응답:', response.data)
 
     const token = response.data.token
     const userRole = response.data.role
@@ -49,17 +42,17 @@ const login = async () => {
     localStorage.setItem('adminId', adminId)
     localStorage.setItem('name', name)
 
-    role.value = userRole // role을 즉시 변경하여 UI 반영
+    role.value = userRole
 
     // 관리자 페이지로 리디렉션
     if (userRole === 'ADMIN')
       router.push('/')
     else
-      alert('You are not authorized to access admin pages.')
+      alert('관리자 페이지에 접근할 수 있는 권한이 없습니다.')
   }
   catch (error) {
     console.error('로그인 오류:', error.response ? error.response.data : error.message)
-    alert('Login failed. Please check your credentials.')
+    alert('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.')
   }
 }
 </script>

@@ -1,6 +1,6 @@
 // src/api/endpoints.ts
 
-const API_BASE_URL = 'http://localhost:8081/api'
+const API_BASE_URL = 'http://54.174.115.49:8081/api'
 
 export const API_ENDPOINTS = {
   HOME: {

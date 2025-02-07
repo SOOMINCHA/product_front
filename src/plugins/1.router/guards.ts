@@ -16,7 +16,7 @@ export const setupGuards = (router: _RouterTyped<RouteNamedMap & { [key: string]
       if (isAdmin)
         return
       else
-        return '/product/all-product' // 일반 사용자는 리다이렉트
+        return '/product/product-list' // 일반 사용자는 리다이렉트
     }
 
     if (to.meta.unauthenticatedOnly) {
@@ -30,7 +30,7 @@ export const setupGuards = (router: _RouterTyped<RouteNamedMap & { [key: string]
       return
 
     // 비로그인 사용자는 특정 페이지만 접근 가능
-    const allowedRoutesForGuests = ['product-all-product', 'login']
+    const allowedRoutesForGuests = ['product-product-list', 'login']
 
     if (!allowedRoutesForGuests.includes(to.name as string))
       return { name: 'not-authorized' }

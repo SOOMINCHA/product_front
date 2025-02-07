@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import axios from 'axios'
 import { onMounted, ref } from 'vue'
-import { API_ENDPOINTS } from '@/api/endpoint'
+import {
+  deleteMigrationLog,
+  downloadMigrationLogs,
+  getMigrationLogs,
+} from '@/api/migrationService'
+import CommonTable from '@/components/ds/migration/CommonTable.vue'
 
 interface MigrationLog {
   id: number
@@ -26,77 +30,59 @@ const headers = [
   { title: '삭제', key: 'delete' },
 ]
 
-const resolveStatusColor = (status: string) => {
-  if (status === 'SUCCESS')
-    return 'success'
-  if (status === 'FAIL')
-    return 'error'
-
-  return 'primary'
-}
-
-// 이관 로그 조회
-const getMigrationLogs = async () => {
+// 이관 결과 로그 가져오기
+const fetchMigrationLogs = async () => {
   isLoading.value = true
   try {
-    const response = await axios.get<MigrationLog[]>(API_ENDPOINTS.MIGRATION.MIGRATIONLOGS)
-
-    migrationLogs.value = response.data
+    migrationLogs.value = await getMigrationLogs()
   }
   catch (err: any) {
-    error.value = err.response?.data?.message || '데이터를 가져오는 중 오류가 발생했습니다.'
-    console.error(error.value)
+    error.value = err.message
   }
   finally {
     isLoading.value = false
   }
 }
 
-// 이관 로그 삭제
-const deleteLog = async (id: number) => {
+// 특정 로그 삭제
+const deleteLogs = async (id: number) => {
   try {
-    await axios.delete(API_ENDPOINTS.MIGRATION.DELETE(id))
-
-    const index = migrationLogs.value.findIndex(log => log.id === id)
-    if (index !== -1)
-      migrationLogs.value.splice(index, 1)
+    await deleteMigrationLog(id)
+    migrationLogs.value = migrationLogs.value.filter(log => log.id !== id)
   }
   catch (err: any) {
-    console.error(`ID ${id} 삭제 실패:`, err.response?.data?.message || err.message)
+    console.error(err.message)
   }
 }
 
-// 이관 결과 다운
+// CSV 다운로드
 const download = async () => {
   try {
-    const response = await axios.get(API_ENDPOINTS.MIGRATION.DOWNLOAD, {
-      responseType: 'blob', // 파일 다운로드를 위해 blob 설정
-    })
-
-    // 파일 다운로드 처리
-    const url = window.URL.createObjectURL(new Blob([response.data]))
-    const link = document.createElement('a')
-
-    link.href = url
-    link.setAttribute('download', '데이터_이관_결과.csv')
-    link.click()
-    window.URL.revokeObjectURL(url)
+    await downloadMigrationLogs()
   }
-  catch (err) {
-    console.error('Export 실패:', err)
+  catch (err: any) {
+    console.error(err.message)
   }
+}
+
+const resolveStatusColor = (reportType: string) => {
+  if (reportType === 'SUCCESS')
+    return 'success'
+  if (reportType === 'FAIL')
+    return 'error'
+
+  return 'secondary'
 }
 
 onMounted(() => {
-  getMigrationLogs()
+  fetchMigrationLogs()
 })
 </script>
 
 <template>
   <VCard class="mb-6">
-    <VCardItem class="project-header d-flex flex-wrap justify-space-between gap-4">
+    <VCardItem class="d-flex flex-wrap justify-space-between gap-4">
       <VCardTitle>이관 결과</VCardTitle>
-
       <template #append>
         <!-- 👉 Export button -->
         <VBtn
@@ -109,34 +95,13 @@ onMounted(() => {
         </VBtn>
       </template>
     </VCardItem>
-    <VDivider />
-    <!-- 로딩 상태 -->
-    <VProgressLinear
-      v-if="isLoading"
-      indeterminate
-      color="primary"
-      class="mb-4"
-    />
 
-    <!-- 에러 메시지 -->
-    <VAlert
-      v-if="error"
-      type="error"
-      dismissible
-      class="mb-4"
-    >
-      {{ error }}
-    </VAlert>
-
-    <!-- 데이터 테이블 -->
-    <VDataTable
+    <CommonTable
       :headers="headers"
       :items="migrationLogs"
-      :items-per-page="5"
-      density="comfortable"
-      class="text-no-wrap"
+      :is-loading="isLoading"
+      :error="error"
     >
-      <!-- STATUS 컬럼 스타일 -->
       <template #item.status="{ item }">
         <VChip
           :color="resolveStatusColor(item.status)"
@@ -146,13 +111,12 @@ onMounted(() => {
           {{ item.status }}
         </VChip>
       </template>
-
       <!-- DELETE 컬럼 (휴지통 아이콘 버튼) -->
       <template #item.delete="{ item }">
-        <IconBtn @click="deleteLog(item.id)">
+        <IconBtn @click="deleteLogs(item.id)">
           <VIcon icon="tabler-trash" />
         </IconBtn>
       </template>
-    </VDataTable>
+    </CommonTable>
   </VCard>
 </template>

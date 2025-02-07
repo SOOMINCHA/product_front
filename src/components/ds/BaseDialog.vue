@@ -1,7 +1,5 @@
 <!-- src/components/BaseDialog.vue -->
 <script setup lang="ts">
-import { defineEmits, defineProps } from 'vue'
-
 const props = defineProps<{
   visible: boolean
   title: string

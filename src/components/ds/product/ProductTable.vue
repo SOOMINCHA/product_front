@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { defineEmits, defineProps, ref, watch } from 'vue'
-import { VChip, VIcon } from 'vuetify/components'
+import { ref, watch } from 'vue'
 
 const props = defineProps<{
   allProducts: Array<any>
@@ -22,7 +21,6 @@ const emits = defineEmits([
   'openInspectionDialog',
 ])
 
-// 테이블 헤더 정의 (기존 코드 유지)
 const headers = [
   { title: '상품 ID', key: 'id' },
   { title: '제품명', key: 'productName' },
@@ -34,12 +32,10 @@ const headers = [
   { title: '상세보기', key: 'actions' },
 ]
 
-// 로컬 상태 (v-model용)
 const localSelectedRows = ref(props.selectedRows)
 const localPage = ref(props.page)
 const localItemsPerPage = ref(props.itemsPerPage)
 
-// watcher: 로컬 값이 바뀌면 부모로 emit
 watch(localSelectedRows, newVal => {
   emits('update:selectedRows', newVal)
 })
@@ -49,7 +45,6 @@ watch(localPage, newVal => {
 watch(localItemsPerPage, newVal => {
 })
 
-// 보고유형 색상 함수
 const resolveStatusColor = (reportType: string) => {
   if (reportType === '검사합격')
     return 'success'
@@ -59,12 +54,10 @@ const resolveStatusColor = (reportType: string) => {
   return 'warning'
 }
 
-// Datatable 정렬 변경 시 부모에 알림
 const emitUpdateOptions = (options: any) => {
   emits('updateOptions', options)
 }
 
-// 액션 아이콘 클릭 시 부모에서 다이얼로그 열도록 emit
 const onOpenCompanyDialog = (productId: number) => {
   emits('openCompanyDialog', productId)
 }

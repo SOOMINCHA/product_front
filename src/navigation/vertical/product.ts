@@ -5,7 +5,7 @@ export default [
     children: [
       {
         title: '전체 상품 보기',
-        to: 'product-all-product',
+        to: 'product-product-list',
       },
     ],
   },
