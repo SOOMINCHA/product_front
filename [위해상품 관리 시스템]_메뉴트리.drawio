@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="26.0.5">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36" version="26.0.11">
   <diagram name="페이지-1" id="IDgZVvw2IaSMrY9Xw5JD">
-    <mxGraphModel dx="792" dy="1539" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1259" dy="1093" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -29,15 +29,7 @@
         <mxCell id="9vvT9xwlWCuOso7HMKHC-13" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;" parent="1" source="9vvT9xwlWCuOso7HMKHC-4" target="9vvT9xwlWCuOso7HMKHC-10" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="9vvT9xwlWCuOso7HMKHC-14" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;endArrow=none;endFill=0;" parent="1" source="9vvT9xwlWCuOso7HMKHC-4" target="9vvT9xwlWCuOso7HMKHC-12" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="9vvT9xwlWCuOso7HMKHC-15" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startArrow=none;startFill=0;endArrow=none;endFill=0;" parent="1" source="9vvT9xwlWCuOso7HMKHC-4" target="9vvT9xwlWCuOso7HMKHC-11" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="100" y="300" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="9vvT9xwlWCuOso7HMKHC-4" value="상품관리" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+        <mxCell id="9vvT9xwlWCuOso7HMKHC-4" value="상품 목록" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="60" y="180.5" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="9vvT9xwlWCuOso7HMKHC-33" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;endArrow=none;endFill=0;" parent="1" source="9vvT9xwlWCuOso7HMKHC-6" target="9vvT9xwlWCuOso7HMKHC-16" edge="1">
@@ -49,17 +41,8 @@
         <mxCell id="9vvT9xwlWCuOso7HMKHC-6" value="데이터 이관" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="340" y="180.5" width="121" height="61" as="geometry" />
         </mxCell>
-        <mxCell id="9vvT9xwlWCuOso7HMKHC-31" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;endArrow=none;endFill=0;strokeColor=none;" parent="1" source="9vvT9xwlWCuOso7HMKHC-10" target="9vvT9xwlWCuOso7HMKHC-12" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="9vvT9xwlWCuOso7HMKHC-10" value="전체상품관리" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="9vvT9xwlWCuOso7HMKHC-10" value="전체 상품 보기" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="60" y="290" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="9vvT9xwlWCuOso7HMKHC-11" value="비위해상품관리" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="60" y="450" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="9vvT9xwlWCuOso7HMKHC-12" value="위해상품관리" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="60" y="370" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="9vvT9xwlWCuOso7HMKHC-18" value="이관 결과 보기" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="341" y="370" width="120" height="60" as="geometry" />
