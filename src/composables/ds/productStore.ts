@@ -17,7 +17,7 @@ export function productStore() {
   const selectedReportType = ref<string | null>(null)
 
   const page = ref(1)
-  const itemsPerPage = ref(10)
+  const itemsPerPage = ref(20)
   const sortBy = ref('id')
   const orderBy = ref('ASC')
 

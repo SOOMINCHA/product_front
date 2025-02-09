@@ -19,7 +19,7 @@ export const startMigration = async () => {
   try {
     const response = await axios.post(API_ENDPOINTS.MIGRATION.MIGRATE)
 
-    // 2초 딜레이 (로딩 효과 주기 위해)
+    // 2초 딜레이
     await new Promise(resolve => setTimeout(resolve, 2000))
 
     if (response.status === 200) {
