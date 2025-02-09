@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
 import axios from 'axios'
+import { computed, onMounted, ref } from 'vue'
 import { API_ENDPOINTS } from '@/api/endpoint'
 
 const hazardousData = ref(0)
@@ -29,7 +29,7 @@ const materialsChartConfig = computed(() => ({
   dataLabels: {
     enabled: false,
     formatter(val: string) {
-      return `${Number.parseInt(val)}%`
+      return `${Number.parseInt(val)}개`
     },
   },
   legend: {
@@ -58,7 +58,7 @@ const materialsChartConfig = computed(() => ({
             fontWeight: 500,
             offsetY: -20,
             formatter(val: string) {
-              return `${Number.parseInt(val)}%`
+              return `${Number.parseInt(val)}개`
             },
           },
           name: { offsetY: 20 },
@@ -68,7 +68,7 @@ const materialsChartConfig = computed(() => ({
             fontWeight: 400,
             label: 'Total',
             formatter() {
-              return `${hazardousData.value + nonHazardousData.value}%`
+              return `${hazardousData.value + nonHazardousData.value}개`
             },
           },
         },
@@ -83,7 +83,7 @@ const materialsChartSeries = computed(() => [hazardousData.value, nonHazardousDa
 <template>
   <VCard>
     <VCardItem title="위해상품 & 비위해상품">
-      <VCardSubtitle>전체상품 중 위해상품 및 비위해상품 비율</VCardSubtitle>
+      <VCardSubtitle>전체 상품 개수 대비 위해상품 및 비위해상품 개수</VCardSubtitle>
       <template #append>
         <MoreBtn />
       </template>
