@@ -6,7 +6,6 @@ const REFRESH_TOKEN_KEY = 'refreshToken'
 
 // API 인스턴스 생성
 export const api = axios.create({
-  baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -21,9 +20,7 @@ api.interceptors.request.use(
 
     return config
   },
-  error => {
-    return Promise.reject(error)
-  },
+  error => Promise.reject(error),
 )
 
 // 응답 인터셉터 추가 (토큰 만료 시 자동 갱신)
