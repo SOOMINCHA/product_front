@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { api } from '@/api/axios-instance'
 import { API_ENDPOINTS } from '@/api/endpoint'
 import { role } from '@/plugins/stores/store'
@@ -19,31 +17,34 @@ definePage({
 const form = ref({
   adminId: 'admin',
   password: 'password',
-  remember: false,
+  remember: true,
 })
 
 const isPasswordVisible = ref(false)
 const router = useRouter()
 
-// Access & Refresh Token 저장 키
 const ACCESS_TOKEN_KEY = 'accessToken'
 const REFRESH_TOKEN_KEY = 'refreshToken'
 
 // 로그인
 const login = async () => {
   try {
+    console.log('🔹 로그인 요청:', form.value)
+
     const response = await api.post(API_ENDPOINTS.AUTH.LOGIN, {
       adminId: form.value.adminId,
       password: form.value.password,
     })
 
-    const accessToken: string = response.data.accessToken
-    const refreshToken: string = response.data.refreshToken
-    const userRole: string = response.data.role
-    const adminId: string = response.data.adminId
-    const name: string = response.data.name || ''
+    console.log('로그인 성공:', response.data)
 
-    // 토큰 저장
+    const accessToken = response.data.accessToken
+    const refreshToken = response.data.refreshToken
+    const userRole = response.data.role
+    const adminId = response.data.adminId
+    const name = response.data.name || ''
+
+    // 로컬스토리지에 저장
     localStorage.setItem(ACCESS_TOKEN_KEY, accessToken)
     localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
     localStorage.setItem('role', userRole)
@@ -52,15 +53,17 @@ const login = async () => {
 
     role.value = userRole
 
-    // 관리자 페이지로 리디렉션
-    if (userRole === 'ADMIN')
+    if (userRole.toUpperCase() === 'ADMIN')
       router.push('/')
     else
-      alert('관리자 페이지에 접근할 수 있는 권한이 없습니다.')
+      alert('관리자 권한이 없습니다.')
   }
   catch (error: any) {
     console.error('로그인 오류:', error.response ? error.response.data : error.message)
-    alert('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.')
+
+    const errorMessage = error.response?.data?.message || '로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.'
+
+    alert(errorMessage)
   }
 }
 </script>
@@ -69,15 +72,19 @@ const login = async () => {
   <div class="auth-container">
     <div class="auth-wrapper d-flex align-center justify-center pa-4">
       <div class="position-relative my-sm-16">
+        <!-- 👉 Top shape -->
         <VNodeRenderer
           :nodes="h('div', { innerHTML: authV1TopShape })"
           class="text-primary auth-v1-top-shape d-none d-sm-block"
         />
+
+        <!-- 👉 Bottom shape -->
         <VNodeRenderer
           :nodes="h('div', { innerHTML: authV1BottomShape })"
           class="text-primary auth-v1-bottom-shape d-none d-sm-block"
         />
 
+        <!-- 👉 Auth Card -->
         <VCard
           class="auth-card"
           max-width="460"
@@ -108,15 +115,18 @@ const login = async () => {
           <VCardText>
             <VForm @submit.prevent="login">
               <VRow>
+                <!-- email -->
                 <VCol cols="12">
                   <AppTextField
                     v-model="form.adminId"
                     autofocus
                     label="Admin ID"
+                    type="email"
                     placeholder="아이디를 입력해 주세요."
                   />
                 </VCol>
 
+                <!-- password -->
                 <VCol cols="12">
                   <AppTextField
                     v-model="form.password"
@@ -126,12 +136,16 @@ const login = async () => {
                     :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                     @click:append-inner="isPasswordVisible = !isPasswordVisible"
                   />
+
+                  <!-- remember me checkbox -->
                   <div class="d-flex align-center justify-space-between flex-wrap my-6">
                     <VCheckbox
                       v-model="form.remember"
                       label="Remember me"
                     />
                   </div>
+
+                  <!-- login button -->
                   <VBtn
                     block
                     type="submit"
@@ -147,3 +161,7 @@ const login = async () => {
     </div>
   </div>
 </template>
+
+<style lang="scss">
+@use "@core/scss/template/pages/page-auth";
+</style>

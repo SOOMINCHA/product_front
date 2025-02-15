@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { nextTick } from 'vue'
 import { role } from '@/plugins/stores/store'
 import avatar1 from '@images/avatars/avatar-12.png'
-
-// ✅ Access & Refresh Token 저장 키
-const ACCESS_TOKEN_KEY = 'accessToken'
-const REFRESH_TOKEN_KEY = 'refreshToken'
 
 const router = useRouter()
 
@@ -16,16 +11,10 @@ const userData = ref({
   adminId: '',
 })
 
-// ✅ 사용자 정보 로드 함수
 const loadUserData = () => {
   const storedName = localStorage.getItem('name')
   const storedRole = localStorage.getItem('role')
   const storedAdminId = localStorage.getItem('adminId')
-  const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY)
-
-  // ✅ Access Token이 없으면 자동 로그아웃
-  if (!accessToken)
-    logout()
 
   userData.value = {
     name: storedName || '',
@@ -34,19 +23,14 @@ const loadUserData = () => {
   }
 }
 
-// ✅ 로그아웃 함수 (Access & Refresh Token 제거)
 const logout = async () => {
-  localStorage.removeItem(ACCESS_TOKEN_KEY)
-  localStorage.removeItem(REFRESH_TOKEN_KEY)
-  localStorage.removeItem('role')
-  localStorage.removeItem('adminId')
-  localStorage.removeItem('name')
+  localStorage.clear()
 
   role.value = ''
   userData.value = { name: '', role: '', adminId: '' }
 
   await nextTick() // 상태 변경이 완료된 후 라우팅 실행
-  router.push('/login')
+  router.push('/product/product-list')
 }
 
 onMounted(() => {
