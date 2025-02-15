@@ -24,5 +24,6 @@ export const API_ENDPOINTS = {
   },
   AUTH: {
     LOGIN: `${API_BASE_URL}/products/admin/login`, // 관리자 로그인
+    REFRESH: `${API_BASE_URL}/products/admin/refresh`, // 리프레시 토큰 발급
   },
 }
