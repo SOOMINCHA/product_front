@@ -1,6 +1,6 @@
 ## 배포 링크
 
-- [Netlify 배포](https://golden-kashata-8e1b0e.netlify.app)
+- [Netlify 배포](https://golden-kashata-8e1b0e.netlify.app) (로그인 필수)
 
 
 ## 프로젝트 개요
