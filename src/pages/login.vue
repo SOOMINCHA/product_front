@@ -29,14 +29,12 @@ const REFRESH_TOKEN_KEY = 'refreshToken'
 // 로그인
 const login = async () => {
   try {
-    console.log('🔹 로그인 요청:', form.value)
 
     const response = await api.post(API_ENDPOINTS.AUTH.LOGIN, {
       adminId: form.value.adminId,
       password: form.value.password,
     })
 
-    console.log('로그인 성공:', response.data)
 
     const accessToken = response.data.accessToken
     const refreshToken = response.data.refreshToken
