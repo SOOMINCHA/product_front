@@ -38,7 +38,7 @@ const login = async () => {
 
     const accessToken = response.data.accessToken
     const refreshToken = response.data.refreshToken
-    const userRole = response.data.role
+    const userRole = response.data.role || "";
     const adminId = response.data.adminId
     const name = response.data.name || ''
 
@@ -51,7 +51,7 @@ const login = async () => {
 
     role.value = userRole
 
-    if (userRole.toUpperCase() === 'ADMIN')
+    if (userRole === 'ADMIN')
       router.push('/')
     else
       alert('관리자 권한이 없습니다.')
