@@ -29,13 +29,19 @@ const REFRESH_TOKEN_KEY = 'refreshToken'
 // 로그인
 const login = async () => {
   try {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1dada77 (250306)
     const response = await api.post(API_ENDPOINTS.AUTH.LOGIN, {
       adminId: form.value.adminId,
       password: form.value.password,
     })
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1dada77 (250306)
     const accessToken = response.data.accessToken
     const refreshToken = response.data.refreshToken
     const userRole = response.data.role || "";
